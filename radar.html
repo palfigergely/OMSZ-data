@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMSZ daily radar</title>
+    <link rel="icon" type="image/jpg" href="http://getdrawings.com/free-icon/twitter-app-icon-53.jpg">
+    <style>
+        html, body{
+            margin: 0;
+            border: 0;
+            padding: 0;
+        }
+        .container{
+            background: 
+            linear-gradient(217deg, grey, rgba(255,0,0,0) 70%),
+            linear-gradient(97deg, lightgrey, rgba(0,255,0,0) 70%),
+            linear-gradient(336deg, rgba(0,0,255,0), rgba(0,0,255,0) 70%);
+            display:grid;
+            grid-template-rows: 125px 300px 1fr;
+            grid-gap: 10px;
+            min-height: 100vh;
+        }
+        .nav{
+            margin-bottom: 10px;
+        }
+        h1{
+            color: darkslategrey;
+            text-shadow:0 0 15px whitesmoke, 0 0 15px whitesmoke;
+            margin: 3px;
+            text-align: center;
+        }
+        header{
+            display:grid;
+            grid-area: 1 / 1 / span 1 / span 1;
+            align-items: center;
+            justify-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: darkgrey;
+            padding-top: 10px
+        }
+        input[type=button]{
+            border-radius: 10px;
+            color: darkcyan;
+            background: white;
+            border: 2px solid darkcyan;
+            line-height: 24px;
+            font-weight: bolder;
+            position: relative;
+            top: 1px;
+            box-shadow:0 0 10px whitesmoke, 0 0 10px whitesmoke;
+        }
+        #date{
+            border-radius: 10px;
+            color: darkcyan;
+            background: white;
+            border: 2px solid darkcyan;
+            line-height: 22px;
+            font-weight: bolder;
+            box-shadow:0 0 10px whitesmoke, 0 0 10px whitesmoke;
+        }
+        .animated{
+            grid-area: 2/1/span 1/span 1;
+            margin: auto;
+        }
+        .animated img{
+            max-height: 294px;
+            box-shadow: 0 0 15px ivory;
+            background-color: ivory;
+        }
+        .pics{
+            grid-row: 3 / span 1;
+            display:grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-auto-rows: 250px;
+            grid-gap: 5px;
+            grid-auto-flow: dense;
+        }
+        .frame{
+            border: 1px solid lawngreen;
+            width: 300px;
+            min-height: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <header>
+            <h1>Radar pictures by Hungarian MET Service</h1>
+            <div class='nav'>
+                <input type="date" id="date" name="date">
+                <input type="button" value="update!" onclick="update()">
+            </div>           
+        </header>
+        <div class="animated"></div>
+        <div class="pics"></div>
+    </div>
+    <script>
+        const update = () => {
+            function static(){
+                document.getElementsByClassName('pics')[0].innerHTML="";
+                let parent = document.getElementsByClassName('pics')[0];
+                let dateSelected1 = new Date(document.querySelector('input[type=date]').value);
+                dateSelected1.setMonth(dateSelected1.getMonth()+1);
+                for(let i=0; i<=(24); i++){
+                    let currentdate1 = new Date(dateSelected1);
+                    currentdate1.setMinutes(currentdate1.getMinutes()+i*60);
+                    let yyyy = currentdate1.getUTCFullYear();
+                    let mm = currentdate1.getUTCMonth();
+                    let dd = currentdate1.getUTCDate();
+                    let hh = currentdate1.getUTCHours();
+                    let min = currentdate1.getUTCMinutes();
+                    let img = document.createElement('img');
+                    img.className='frame';
+                    img.src = `http://www.metnet.hu/img/radar/${yyyy}/${String(mm).padStart(2,'0')}/${String(dd).padStart(2,'0')}/Rccw${yyyy}${String(mm).padStart(2,'0')}${String(dd).padStart(2,'0')}_${String(hh).padStart(2,'0')}${String(min).padStart(2,'0')}.jpg`;
+                    img.alt = `UTC ${yyyy}-${mm}-${dd} ${hh}:${min} | Error: No radar image available!`;
+                    parent.appendChild(img);
+                }
+            }
+            function animated(){
+                document.getElementsByClassName('animated')[0].innerHTML="";
+                let parent2 = document.getElementsByClassName('animated')[0];
+                let dateSelected2 = new Date(document.querySelector('input[type=date]').value);
+                dateSelected2.setMonth(dateSelected2.getMonth()+1);
+                dateSelected2.setHours(dateSelected2.getHours()-3);
+                let currentDate2 = new Date(dateSelected2);
+                let img2 = document.createElement('img');
+                img2.className = 'cinema';
+                parent2.appendChild(img2);
+                let picture = document.getElementsByClassName('cinema')[0];
+                function change(){
+                    currentDate2.setMinutes(currentDate2.getMinutes()+10);
+                    let yyyy = currentDate2.getUTCFullYear();
+                    let mm = currentDate2.getUTCMonth();
+                    let dd = currentDate2.getUTCDate();
+                    let hh = currentDate2.getUTCHours();
+                    let min = currentDate2.getUTCMinutes();
+                    picture.src = `http://www.metnet.hu/img/radar/${yyyy}/${String(mm).padStart(2,'0')}/${String(dd).padStart(2,'0')}/Rccw${yyyy}${String(mm).padStart(2,'0')}${String(dd).padStart(2,'0')}_${String(hh).padStart(2,'0')}${String(min).padStart(2,'0')}.jpg`;
+                    if(dateSelected2.getDate()+1 < currentDate2.getDate() && dateSelected2.getHours()-18 < currentDate2.getHours()){
+                        clearInterval(anim);
+                        picture.src = "";
+                        picture.alt = "The animation has ended, please select an other START time!";
+                    }
+                }
+                let anim = setInterval(change, 333);
+            }
+            animated();
+            static();
+        }
+    </script>
+</body>
+</html>
