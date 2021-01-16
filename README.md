@@ -6,4 +6,4 @@ Images to Video download: [link](https://download.cnet.com/Images-to-video/3000-
 
 # OMSZ daily summary animations
 
-[Page for check the daily animations about Hungary's meteorology](./daily.html) 
+[Page for check the daily animations about Hungary's meteorology](https://palfigergely.github.io/OMSZ-data/radar.html) 
