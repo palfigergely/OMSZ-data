@@ -6,8 +6,4 @@ Images to Video download: [link](https://download.cnet.com/Images-to-video/3000-
 
 # OMSZ daily summary animations
 
-<<<<<<< HEAD
-[Page for check the current status about Hungary's meteorology](./current.html)
-=======
 [Page for check the daily animations about Hungary's meteorology](https://palfigergely.github.io/OMSZ-data/radar.html) 
->>>>>>> 473b45a27ee09991fcc1e1bc11d7ea959bdb3365
